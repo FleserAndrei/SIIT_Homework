@@ -1,32 +1,72 @@
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Scanner line = new Scanner(System.in);
+        List<Student> studentList = new ArrayList<>();
+        addStudent("Arnold", "Dame", LocalDate.parse("1999-03-19"), 'M', 199245756, studentList);
+        addStudent("Viorica", "Lacatus", LocalDate.parse("1991-02-11"), 'F', 294345754, studentList);
+        addStudent("Viorel", "Lacatus", LocalDate.parse("1987-01-29"), 'M', 178235476, studentList);
 
-        System.out.println("Enter expression");
+//        System.out.println(studentList.stream().count());
+//
+//        deleteStudent(294345754, studentList);
+//
+//        System.out.println(studentList.stream().count());
+//
+//        List<Student> studentsAge = retrieveStudent(23, studentList);
+//
+//        System.out.println(studentsAge.stream().count());
+    }
 
-        String expression = line.nextLine();
+    public static void addStudent(String firstName, String lastName, LocalDate dateOfBirth, char Gender, int ID, List<Student> studentList) {
 
-        String[] splits = expression.split(" ");
+        Student student = new Student();
 
-        Calculator calculator = new Calculator();
+        student.firstName = firstName;
+        student.lastName = lastName;
+        student.dateOfBirth = dateOfBirth;
+        student.Gender = Gender;
+        student.ID = ID;
 
-        calculator.add(Integer.parseInt(splits[0]), splits[1]);
-        for (int i = 2; i < splits.length; i += 3) {
-            if (splits[i].equals("+")) {
-                calculator.add(Integer.parseInt(splits[i + 1]), splits[i + 2]);
-            }
-            if (splits[i].equals("-")) {
-                calculator.substract(Integer.parseInt(splits[i + 1]), splits[i + 2]);
+        studentList.add(student);
+    }
+
+    public static void deleteStudent(int ID,List<Student> studentList){
+
+        for (Student student:studentList) {
+            if (student.ID  == ID) {
+                int index = studentList.indexOf(student);
+                studentList.remove(index);
+                break;
             }
 
         }
 
-        System.out.println("Result is: " + calculator.getResult());
+    }
+    public static List<Student> retrieveStudent(int age,List<Student> studentList){
+
+        List<Student> students = new ArrayList<>();
+
+        for (Student student:studentList) {
+            Period period = Period.between(student.dateOfBirth, LocalDate.now());
+            if (period.getYears() == age){
+                students.add(student);
+            }
+
+        }
+        return students;
+
+
 
     }
+
+
+
+
 
 }
